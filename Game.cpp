@@ -22,13 +22,15 @@ void Game::Reset()
 	// TODO #2 - Add this brick and 4 more bricks to the vector
 	bricks.resize(numberOfBricks);
 	int brickWidth = 10;
+	int brickGap = 2;
 	int startPos = 5;
+	int nextBrick = brickWidth + brickGap;
 
 	for (int i = 0; i < numberOfBricks; i++) {
 		//int brickOffset = 
 		bricks[i].width = brickWidth;
 		bricks[i].height = 2;
-		bricks[i].x_position = startPos + (i * brickWidth);
+		bricks[i].x_position = startPos + (i * nextBrick);
 		bricks[i].y_position = 5;
 		bricks[i].doubleThick = true;
 		bricks[i].color = ConsoleColor::DarkGreen;
@@ -79,6 +81,12 @@ void Game::Render() const
 	for (int i = 0; i < bricks.size(); i++)
 		bricks[i].Draw();
 
+	if (bricks.empty()) {
+		int centerHeight = Console::WindowHeight() / 2;
+		int centerWidth = Console::WindowWidth() / 2;
+		Console::WordWrap(centerWidth, centerHeight, 20, "You win! Press R to play again.");
+	}
+
 	Console::Lock(false);
 }
 
@@ -97,17 +105,15 @@ void Game::CheckCollision()
 				iter++;
 
 			break;
-		} else 
+		} else
 			iter++;
+	}
+	// TODO #6 - If no bricks remain, pause ball and display (render) victory text with R to reset
+	if (bricks.empty()) {
+		ball.x_velocity = 0;
+		ball.y_velocity = 0;
+		
 
-		// TODO #6 - If no bricks remain, pause ball and display (render) victory text with R to reset
-		if (bricks.empty()) {
-			ball.x_velocity = 0;
-			ball.y_velocity = 0;
-
-			Game::Render();
-			std::cout << "Victory!";
-		}
 	}
 	if (paddle.Contains(ball.x_position + ball.x_velocity, ball.y_velocity + ball.y_position))
 	{
