@@ -81,10 +81,14 @@ void Game::Render() const
 	for (int i = 0; i < bricks.size(); i++)
 		bricks[i].Draw();
 
+	int centerHeight = Console::WindowHeight() / 2;
+	int centerWidth = Console::WindowWidth() / 2;
+	int offset = 10;
+
 	if (bricks.empty()) {
-		int centerHeight = Console::WindowHeight() / 2;
-		int centerWidth = Console::WindowWidth() / 2;
-		Console::WordWrap(centerWidth, centerHeight, 20, "You win! Press R to play again.");
+		Console::WordWrap(centerWidth - offset, centerHeight, 20, "You win! Press R to play again.");
+	} else if (ball.y_position >= Console::WindowHeight()) {
+		Console::WordWrap(centerWidth - offset, centerHeight, 20, "You lose! Press R to play again.");
 	}
 
 	Console::Lock(false);
@@ -112,8 +116,6 @@ void Game::CheckCollision()
 	if (bricks.empty()) {
 		ball.x_velocity = 0;
 		ball.y_velocity = 0;
-		
-
 	}
 	if (paddle.Contains(ball.x_position + ball.x_velocity, ball.y_velocity + ball.y_position))
 	{
@@ -121,4 +123,10 @@ void Game::CheckCollision()
 	}
 
 	// TODO #7 - If ball touches bottom of window, pause ball and display (render) defeat text with R to reset
+	if (ball.y_position >= Console::WindowHeight()) {
+		ball.x_velocity = 0;
+		ball.y_velocity = 0;
+
+		ball.y_position = Console::WindowHeight();
+	}
 }
