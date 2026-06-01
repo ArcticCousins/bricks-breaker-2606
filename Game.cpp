@@ -33,7 +33,7 @@ void Game::Reset()
 		bricks[i].x_position = startPos + (i * nextBrick);
 		bricks[i].y_position = 5;
 		bricks[i].doubleThick = true;
-		bricks[i].color = ConsoleColor::DarkGreen;
+		bricks[i].color = ConsoleColor::DarkCyan;
 	}
 }
 
