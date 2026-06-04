@@ -16,7 +16,7 @@ void Game::Reset()
 	paddle.y_position = 30;
 
 	ball.visage = 'O';
-	ball.color = ConsoleColor::Cyan;
+	ball.color = ConsoleColor::DarkCyan;
 	ResetBall();
 
 	// TODO #2 - Add this brick and 4 more bricks to the vector
